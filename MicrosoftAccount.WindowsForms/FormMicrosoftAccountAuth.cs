@@ -13,9 +13,9 @@ namespace MicrosoftAccount.WindowsForms
 {
     public partial class FormMicrosoftAccountAuth : Form
     {
-        public const string OAuthDesktopEndPoint = "https://login.live.com/oauth20_desktop.srf";
-        public const string OAuthMSAAuthorizeService = "https://login.live.com/oauth20_authorize.srf";
-        public const string OAuthMSATokenService = "https://login.live.com/oauth20_token.srf";
+        public const string OAuthDesktopEndPoint        = "https://login.microsoftonline.com/common/oauth2/nativeclient";
+        public const string OAuthMSAAuthorizeService    = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+        public const string OAuthMSATokenService        = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
         public string StartUrl { get; private set; }
         public string EndUrl { get; private set; }

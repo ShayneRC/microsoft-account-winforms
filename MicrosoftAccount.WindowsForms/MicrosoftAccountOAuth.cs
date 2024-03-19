@@ -10,13 +10,13 @@ namespace MicrosoftAccount.WindowsForms
     {
         public static async Task<string> LoginOneTimeAuthorizationAsync(string clientId, string[] scopes, IWin32Window owner = null) => await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.ImplicitGrant, owner);
 
-        public static async Task<AppTokenResult> LoginAuthorizationCodeFlowAsync(string clientId, string clientSecret, string[] scopes, IWin32Window owner = null)
+        public static async Task<AppTokenResult> LoginAuthorizationCodeFlowAsync(string clientId, string[] scopes, IWin32Window owner = null)
         {
             var authorizationCode = await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.AuthorizationCodeGrant, owner);
             if (string.IsNullOrEmpty(authorizationCode))
                 return null;
 
-            var tokens = await RedeemAuthorizationCodeAsync(clientId, FormMicrosoftAccountAuth.OAuthDesktopEndPoint, clientSecret, authorizationCode);
+            var tokens = await RedeemAuthorizationCodeAsync(clientId, FormMicrosoftAccountAuth.OAuthDesktopEndPoint, authorizationCode);
             return tokens;
         }
 
@@ -85,12 +85,11 @@ namespace MicrosoftAccount.WindowsForms
             }
         }
 
-        private static async Task<AppTokenResult> RedeemAuthorizationCodeAsync(string clientId, string redirectUrl, string clientSecret, string authCode)
+        private static async Task<AppTokenResult> RedeemAuthorizationCodeAsync(string clientId, string redirectUrl, string authCode)
         {
             QueryStringBuilder queryBuilder = new QueryStringBuilder();
             queryBuilder.Add("client_id", clientId);
             queryBuilder.Add("redirect_uri", redirectUrl);
-            queryBuilder.Add("client_secret", clientSecret);
             queryBuilder.Add("code", authCode);
             queryBuilder.Add("grant_type", "authorization_code");
 
