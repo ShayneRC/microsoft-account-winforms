@@ -1,30 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicrosoftAccount.WindowsForms
 {
     public class AuthResult
     {
+        public OAuthFlow AuthFlow { get; private set; }
+        public string AuthorizeCode { get; private set; }
+        public string ErrorCode { get; private set; }
+        public string ErrorDescription { get; private set; }
+        public string AccessToken { get; private set; }
+        public string AuthenticationToken { get; private set; }
+        public string TokenType { get; private set; }
+        public TimeSpan AccessTokenExpiresIn { get; private set; }
+        public string[] Scopes { get; private set; }
+        public string UserId { get; private set; }
+
         public AuthResult(Uri resultUri, OAuthFlow flow)
         {
-            this.AuthFlow = flow;
+            AuthFlow = flow;
 
-            string[] queryParams = null;
+            string[] queryParams;
             switch (flow)
             {
                 case OAuthFlow.ImplicitGrant:
                     int accessTokenIndex = resultUri.AbsoluteUri.IndexOf("#access_token");
-                    if (accessTokenIndex > 0)
-                    {
-                        queryParams = resultUri.AbsoluteUri.Substring(accessTokenIndex + 1).Split('&');
-                    }
-                    else
-                    {
-                        queryParams = resultUri.Query.TrimStart('?').Split('&');
-                    }
+                    queryParams = accessTokenIndex > 0
+                        ? resultUri.AbsoluteUri.Substring(accessTokenIndex + 1).Split('&')
+                        : resultUri.Query.TrimStart('?').Split('&');
                     break;
                 case OAuthFlow.AuthorizationCodeGrant:
                     queryParams = resultUri.Query.TrimStart('?').Split('&');
@@ -39,46 +41,35 @@ namespace MicrosoftAccount.WindowsForms
                 switch (kvp[0])
                 {
                     case "code":
-                        this.AuthorizeCode = kvp[1];
+                        AuthorizeCode = kvp[1];
                         break;
                     case "access_token":
-                        this.AccessToken = kvp[1];
+                        AccessToken = kvp[1];
                         break;
                     case "authorization_token":
                     case "authentication_token":
-                        this.AuthenticationToken = kvp[1];
+                        AuthenticationToken = kvp[1];
                         break;
                     case "error":
-                        this.ErrorCode = kvp[1];
+                        ErrorCode = kvp[1];
                         break;
                     case "error_description":
-                        this.ErrorDescription = Uri.UnescapeDataString(kvp[1]);
+                        ErrorDescription = Uri.UnescapeDataString(kvp[1]);
                         break;
                     case "token_type":
-                        this.TokenType = kvp[1];
+                        TokenType = kvp[1];
                         break;
                     case "expires_in":
-                        this.AccessTokenExpiresIn = new TimeSpan(0, 0, int.Parse(kvp[1]));
+                        AccessTokenExpiresIn = new TimeSpan(0, 0, int.Parse(kvp[1]));
                         break;
                     case "scope":
-                        this.Scopes = kvp[1].Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
+                        Scopes = kvp[1].Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries);
                         break;
                     case "user_id":
-                        this.UserId = kvp[1];
+                        UserId = kvp[1];
                         break;
                 }
             }
         }
-
-        public OAuthFlow AuthFlow { get; private set; }
-        public string AuthorizeCode { get; private set; }
-        public string ErrorCode { get; private set; }
-        public string ErrorDescription { get; private set; }
-        public string AccessToken { get; private set; }
-        public string AuthenticationToken { get; private set; }
-        public string TokenType { get; private set; }
-        public TimeSpan AccessTokenExpiresIn { get; private set; }
-        public string[] Scopes { get; private set; }
-        public string UserId { get; private set; }
     }
 }

@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace MicrosoftAccount.WindowsForms
 {
     public static class MicrosoftAccountOAuth
     {
-
-        public static async Task<string> LoginOneTimeAuthorizationAsync(string clientId, string[] scopes, IWin32Window owner = null)
-        {
-            return await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.ImplicitGrant, owner);
-        }
+        public static async Task<string> LoginOneTimeAuthorizationAsync(string clientId, string[] scopes, IWin32Window owner = null) => await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.ImplicitGrant, owner);
 
         public static async Task<AppTokenResult> LoginAuthorizationCodeFlowAsync(string clientId, string clientSecret, string[] scopes, IWin32Window owner = null)
         {
@@ -98,7 +91,5 @@ namespace MicrosoftAccount.WindowsForms
 
             return await PostToTokenEndPoint(queryBuilder);
         }
-
-
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MicrosoftAccount.WindowsForms
 {
     public class QueryStringBuilder
     {
         private readonly Dictionary<string, string> parameters = new Dictionary<string, string>();
+
         public QueryStringBuilder()
         {
             StartCharacter = null;
@@ -16,20 +16,11 @@ namespace MicrosoftAccount.WindowsForms
             KeyValueJoinCharacter = '=';
         }
 
-        public QueryStringBuilder(string key, string value)
-        {
-            this[key] = value;
-        }
+        public QueryStringBuilder(string key, string value) => this[key] = value;
 
-        public void Clear()
-        {
-            parameters.Clear();
-        }
+        public void Clear() => parameters.Clear();
 
-        public bool HasKeys
-        {
-            get { return parameters.Count > 0; }
-        }
+        public bool HasKeys => parameters.Count > 0;
 
         public char? StartCharacter { get; set; }
 
@@ -39,38 +30,17 @@ namespace MicrosoftAccount.WindowsForms
 
         public string this[string key]
         {
-            get
-            {
-                if (parameters.ContainsKey(key))
-                    return parameters[key];
-                else
-                    return null;
-            }
-            set
-            {
-                parameters[key] = value;
-            }
+            get => parameters.ContainsKey(key) ? parameters[key] : null;
+            set => parameters[key] = value;
         }
 
-        public bool ContainsKey(string key)
-        {
-            return parameters.ContainsKey(key);
-        }
+        public bool ContainsKey(string key) => parameters.ContainsKey(key);
 
-        public string[] Keys
-        {
-            get { return parameters.Keys.ToArray(); }
-        }
+        public string[] Keys => parameters.Keys.ToArray();
 
-        public void Add(string key, string value)
-        {
-            parameters[key] = value;
-        }
+        public void Add(string key, string value) => parameters[key] = value;
 
-        public void Remove(string key)
-        {
-            parameters.Remove(key);
-        }
+        public void Remove(string key) => parameters.Remove(key);
 
         public override string ToString()
         {
