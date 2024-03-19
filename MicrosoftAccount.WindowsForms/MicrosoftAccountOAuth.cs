@@ -34,6 +34,8 @@ namespace MicrosoftAccount.WindowsForms
 
         private static async Task<AppTokenResult> PostToTokenEndPoint(QueryStringBuilder queryBuilder)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             HttpWebRequest request = WebRequest.CreateHttp(FormMicrosoftAccountAuth.OAuthMSATokenService);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
