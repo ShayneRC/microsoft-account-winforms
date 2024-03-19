@@ -54,29 +54,34 @@ namespace MicrosoftAccount.WindowsForms
             {
                 httpResponse = webex.Response as HttpWebResponse;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return null;
+                return new AppTokenResult() { Error = ex.Message };
             }
 
-            // TODO: better error handling
-
-            if (httpResponse == null) 
-                return null;
+            if (httpResponse == null)
+                return new AppTokenResult() { Error = "httpResponse was null" };
 
             if (httpResponse.StatusCode != HttpStatusCode.OK)
             {
                 httpResponse.Dispose();
-                return null;
+                return new AppTokenResult() { Error = $"{httpResponse.StatusCode}: {httpResponse.StatusDescription}" };
             }
 
-            using (var responseBodyStreamReader = new StreamReader(httpResponse.GetResponseStream()))
+            try
             {
-                var responseBody = await responseBodyStreamReader.ReadToEndAsync();
-                var tokenResult = Newtonsoft.Json.JsonConvert.DeserializeObject<AppTokenResult>(responseBody);
+                using (var responseBodyStreamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var responseBody = await responseBodyStreamReader.ReadToEndAsync();
+                    var tokenResult = Newtonsoft.Json.JsonConvert.DeserializeObject<AppTokenResult>(responseBody);
 
-                httpResponse.Dispose();
-                return tokenResult;
+                    httpResponse.Dispose();
+                    return tokenResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new AppTokenResult() { Error = $"Error reading response: {ex.Message}" };
             }
         }
 

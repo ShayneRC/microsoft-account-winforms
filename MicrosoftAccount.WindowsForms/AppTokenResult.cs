@@ -22,5 +22,10 @@ namespace MicrosoftAccount.WindowsForms
 
         [JsonProperty("authentication_token")]
         public string AuthenticationToken { get; set; }
+
+        [JsonIgnore]
+        public string Error { get; set; }
+
+        public bool IsError => !string.IsNullOrEmpty(Error);
     }
 }
