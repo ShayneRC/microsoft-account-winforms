@@ -20,12 +20,11 @@ namespace MicrosoftAccount.WindowsForms
             return tokens;
         }
 
-        public static async Task<AppTokenResult> RedeemRefreshTokenAsync(string clientId, string clientSecret, string refreshToken)
+        public static async Task<AppTokenResult> RedeemRefreshTokenAsync(string clientId, string refreshToken)
         {
             var queryBuilder = new QueryStringBuilder();
             queryBuilder.Add("client_id", clientId);
             queryBuilder.Add("redirect_uri", FormMicrosoftAccountAuth.OAuthDesktopEndPoint);
-            queryBuilder.Add("client_secret", clientSecret);
             queryBuilder.Add("refresh_token", refreshToken);
             queryBuilder.Add("grant_type", "refresh_token");
 
