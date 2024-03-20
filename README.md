@@ -1,21 +1,22 @@
 # Microsoft Account Windows Forms
 
 This library provides an easy way to generate Microsoft Account access and 
-refresh tokens from a Windows Forms application.
+refresh tokens from a Windows Forms application. It has been forked from [here](https://github.com/rgregg/microsoft-account-winforms)
+and has been modified to use the Microsoft Identity Platform [docs](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow)
 
 Before using this library, you need to register your application on the 
 [Microsoft Account developer center](https://account.live.com/developers/applications/).
 Your application needs to be configured as a Mobile or Desktop Client application on the
 API settings page for this library to work.
 
-To retrieve a one-time access token:
+To retrieve a one-time access token (currently un-tested):
 ```csharp
 using MicrosoftAccount.WindowsForms;
 
 public async void Authenticate()
 {
   string accessToken = await MicrosoftAccountOAuth.LoginOneTimeAuthorizationAsync("client_id", 
-    new string[] { "wl.signin", "wl.basic" });
+    new string[] { "https://graph.microsoft.com/user.read", "offline_access" });
 }
 ```
 
@@ -28,7 +29,7 @@ using MicrosoftAccount.WindowsForms;
 public async void Authenticate()
 {
   var token = await MicrosoftAccountOAuth.LoginAuthorizationCodeFlowAsync("client_id",
-    "client_secret", new string[] { "wl.offline_access", "wl.basic", "wl.signin" });
+    new string[] { "https://graph.microsoft.com/user.read", "offline_access" });
   
   string accessToken = token.AccessToken;
   string refreshToken = token.RefreshToken;
@@ -41,10 +42,12 @@ After the access token has expired, you can redeem the refresh token for a new s
 tokens using `RedeemRefreshTokenAsync()`:
 
 ```csharp
+using MicrosoftAccount.WindowsForms;
+
 public async void RenewAuthentication()
 {
-  var token = await MicrosoftAccountOAuth.LoginAuthorizationCodeFlowAsync("client_id",
-    "client_secret", "refresh_token");
+  var token = await MicrosoftAccountOAuth.RedeemRefreshTokenAsync("client_id",
+    "refresh_token");
   
   string accessToken = token.AccessToken;
   string refreshToken = token.RefreshToken;
