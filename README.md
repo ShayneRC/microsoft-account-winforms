@@ -33,6 +33,7 @@ public async void Authenticate()
   
   string accessToken = token.AccessToken;
   string refreshToken = token.RefreshToken;
+  string userEmail = token.Email;
   
   // Store these values somewhere useful. Treat them like passwords!
 }
@@ -46,8 +47,7 @@ using MicrosoftAccount.WindowsForms;
 
 public async void RenewAuthentication()
 {
-  var token = await MicrosoftAccountOAuth.RedeemRefreshTokenAsync("client_id",
-    "refresh_token");
+  var token = await MicrosoftAccountOAuth.RedeemRefreshTokenAsync("client_id", "refresh_token");
   
   string accessToken = token.AccessToken;
   string refreshToken = token.RefreshToken;
