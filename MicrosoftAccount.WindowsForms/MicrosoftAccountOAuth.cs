@@ -65,8 +65,9 @@ namespace MicrosoftAccount.WindowsForms
 
             if (httpResponse.StatusCode != HttpStatusCode.OK)
             {
+                var appTokenResult = new AppTokenResult() { Error = $"{httpResponse.StatusCode}: {httpResponse.StatusDescription}" };
                 httpResponse.Dispose();
-                return new AppTokenResult() { Error = $"{httpResponse.StatusCode}: {httpResponse.StatusDescription}" };
+                return appTokenResult;
             }
 
             try

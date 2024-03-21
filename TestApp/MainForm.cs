@@ -51,7 +51,7 @@ namespace TestApp
 
             var authResult = await MicrosoftAccountOAuth.LoginAuthorizationCodeFlowAsync(tbClientId.Text, scopes);
 
-            if (authResult.IsError)
+            if (authResult?.IsError == true)
             {
                 tbStatus.Text = authResult.Error;
                 return;
