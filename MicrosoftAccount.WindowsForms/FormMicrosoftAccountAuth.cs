@@ -16,6 +16,7 @@ namespace MicrosoftAccount.WindowsForms
         public const string OAuthDesktopEndPoint        = "https://login.microsoftonline.com/common/oauth2/nativeclient";
         public const string OAuthMSAAuthorizeService    = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
         public const string OAuthMSATokenService        = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+        public const string OAuthGraphMe                = "https://graph.microsoft.com/v1.0/me";
 
         public string StartUrl { get; private set; }
         public string EndUrl { get; private set; }

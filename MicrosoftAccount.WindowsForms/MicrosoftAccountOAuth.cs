@@ -4,6 +4,8 @@ using System.Net;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json;
+
 namespace MicrosoftAccount.WindowsForms
 {
     public static class MicrosoftAccountOAuth
@@ -17,6 +19,10 @@ namespace MicrosoftAccount.WindowsForms
                 return null;
 
             var tokens = await RedeemAuthorizationCodeAsync(clientId, FormMicrosoftAccountAuth.OAuthDesktopEndPoint, authorizationCode);
+
+            // This needs the user.read scope to work.
+            tokens.Email = await GetEmailAsync(tokens.AccessToken);
+
             return tokens;
         }
 
@@ -75,7 +81,7 @@ namespace MicrosoftAccount.WindowsForms
                 using (var responseBodyStreamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var responseBody = await responseBodyStreamReader.ReadToEndAsync();
-                    var tokenResult = Newtonsoft.Json.JsonConvert.DeserializeObject<AppTokenResult>(responseBody);
+                    var tokenResult = JsonConvert.DeserializeObject<AppTokenResult>(responseBody);
 
                     httpResponse.Dispose();
                     return tokenResult;
@@ -96,6 +102,56 @@ namespace MicrosoftAccount.WindowsForms
             queryBuilder.Add("grant_type", "authorization_code");
 
             return await PostToTokenEndPoint(queryBuilder);
+        }
+
+        private static async Task<string> GetEmailAsync(string accessToken)
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
+            HttpWebRequest request = WebRequest.CreateHttp(FormMicrosoftAccountAuth.OAuthGraphMe);
+            request.Method = "GET";
+            request.Headers.Add("Authorization", $"Bearer {accessToken}");
+
+            HttpWebResponse httpResponse;
+            try
+            {
+                var response = await request.GetResponseAsync();
+                httpResponse = response as HttpWebResponse;
+            }
+            catch (WebException webex)
+            {
+                httpResponse = webex.Response as HttpWebResponse;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            if (httpResponse == null)
+                return "httpResponse was null";
+
+            if (httpResponse.StatusCode != HttpStatusCode.OK)
+            {
+                var responseMsg = $"{httpResponse.StatusCode}: {httpResponse.StatusDescription}";
+                httpResponse.Dispose();
+                return responseMsg;
+            }
+
+            try
+            {
+                using (var responseBodyStreamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var responseBody = await responseBodyStreamReader.ReadToEndAsync();
+                    var userDetails = JsonConvert.DeserializeObject<UserDetails>(responseBody);
+
+                    httpResponse.Dispose();
+                    return userDetails.UserPrincipalName;
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error reading response: {ex.Message}";
+            }
         }
     }
 }

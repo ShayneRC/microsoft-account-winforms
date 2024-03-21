@@ -24,6 +24,9 @@ namespace MicrosoftAccount.WindowsForms
         public string AuthenticationToken { get; set; }
 
         [JsonIgnore]
+        public string Email { get; set; }
+
+        [JsonIgnore]
         public string Error { get; set; }
 
         public bool IsError => !string.IsNullOrEmpty(Error);
