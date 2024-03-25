@@ -40,7 +40,7 @@
             // 
             this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.webBrowser.Location = new System.Drawing.Point(0, 25);
-            this.webBrowser.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.webBrowser.Margin = new System.Windows.Forms.Padding(1);
             this.webBrowser.MinimumSize = new System.Drawing.Size(10, 10);
             this.webBrowser.Name = "webBrowser";
             this.webBrowser.Size = new System.Drawing.Size(583, 531);
@@ -84,10 +84,11 @@
             this.ClientSize = new System.Drawing.Size(583, 556);
             this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "FormMicrosoftAccountAuth";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "FormMicrosoftAccountAuth";
+            this.Text = "Sign in to your account";
             this.Load += new System.EventHandler(this.FormMicrosoftAccountAuth_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

@@ -126,7 +126,7 @@ namespace MicrosoftAccount.WindowsForms
             return sb.ToString();
         }
 
-        public static void GenerateUrlsForOAuth(string clientId, string[] scopes, OAuthFlow flow, out string startUrl, out string completeUrl, string redirectUrl = OAuthDesktopEndPoint)
+        public static void GenerateUrlsForOAuth(string clientId, string[] scopes, OAuthFlow flow, bool selectAccount, out string startUrl, out string completeUrl, string redirectUrl = OAuthDesktopEndPoint)
         {
             Dictionary<string, string> urlParam = new Dictionary<string, string>
             {
@@ -135,6 +135,9 @@ namespace MicrosoftAccount.WindowsForms
                 { "redirect_uri", redirectUrl },
                 { "display", "popup" }
             };
+
+            if (selectAccount)
+                urlParam.Add("prompt", "select_account");
 
             switch (flow)
             {
@@ -152,9 +155,9 @@ namespace MicrosoftAccount.WindowsForms
             completeUrl = redirectUrl;
         }
 
-        public static async Task<string> GetAuthenticationToken(string clientId, string[] scopes, OAuthFlow flow, IWin32Window owner = null)
+        public static async Task<string> GetAuthenticationToken(string clientId, string[] scopes, OAuthFlow flow, bool selectAccount, IWin32Window owner = null)
         {
-            GenerateUrlsForOAuth(clientId, scopes, flow, out string startUrl, out string completeUrl);
+            GenerateUrlsForOAuth(clientId, scopes, flow, selectAccount, out string startUrl, out string completeUrl);
 
             FormMicrosoftAccountAuth authForm = new FormMicrosoftAccountAuth(startUrl, completeUrl, flow);
             DialogResult result = await authForm.ShowDialogAsync(owner);

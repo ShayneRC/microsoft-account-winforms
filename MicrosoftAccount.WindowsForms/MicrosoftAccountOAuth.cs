@@ -10,11 +10,11 @@ namespace MicrosoftAccount.WindowsForms
 {
     public static class MicrosoftAccountOAuth
     {
-        public static async Task<string> LoginOneTimeAuthorizationAsync(string clientId, string[] scopes, IWin32Window owner = null) => await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.ImplicitGrant, owner);
+        public static async Task<string> LoginOneTimeAuthorizationAsync(string clientId, string[] scopes, bool selectAccount, IWin32Window owner = null) => await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.ImplicitGrant, selectAccount, owner);
 
-        public static async Task<AppTokenResult> LoginAuthorizationCodeFlowAsync(string clientId, string[] scopes, IWin32Window owner = null)
+        public static async Task<AppTokenResult> LoginAuthorizationCodeFlowAsync(string clientId, string[] scopes, bool selectAccount, IWin32Window owner = null)
         {
-            var authorizationCode = await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.AuthorizationCodeGrant, owner);
+            var authorizationCode = await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.AuthorizationCodeGrant, selectAccount, owner);
             if (string.IsNullOrEmpty(authorizationCode))
                 return null;
 
