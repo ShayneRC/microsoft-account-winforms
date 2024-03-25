@@ -16,7 +16,7 @@ using MicrosoftAccount.WindowsForms;
 public async void Authenticate()
 {
   string accessToken = await MicrosoftAccountOAuth.LoginOneTimeAuthorizationAsync("client_id", 
-    new string[] { "https://graph.microsoft.com/user.read", "offline_access" });
+    new string[] { "https://graph.microsoft.com/user.read", "offline_access" }, true);
 }
 ```
 
@@ -28,8 +28,9 @@ using MicrosoftAccount.WindowsForms;
 
 public async void Authenticate()
 {
+  bool selectAccount = true;
   var token = await MicrosoftAccountOAuth.LoginAuthorizationCodeFlowAsync("client_id",
-    new string[] { "https://graph.microsoft.com/user.read", "offline_access" });
+    new string[] { "https://graph.microsoft.com/user.read", "offline_access" }, selectAccount);
   
   string accessToken = token.AccessToken;
   string refreshToken = token.RefreshToken;
