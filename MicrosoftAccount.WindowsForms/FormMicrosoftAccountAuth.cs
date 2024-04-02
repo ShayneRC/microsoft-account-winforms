@@ -162,6 +162,8 @@ namespace MicrosoftAccount.WindowsForms
             FormMicrosoftAccountAuth authForm = new FormMicrosoftAccountAuth(startUrl, completeUrl, flow);
             DialogResult result = await authForm.ShowDialogAsync(owner);
 
+            Logging.Log($"DialogResult: {result}\n\nAuthResult: {authForm.AuthResult.AuthFlow} | {authForm.AuthResult.AuthorizeCode} | {authForm.AuthResult.AccessToken} | {authForm.AuthResult.AuthenticationToken} | {authForm.AuthResult.ErrorCode} | {authForm.AuthResult.ErrorDescription} | {authForm.AuthResult.TokenType} | {authForm.AuthResult.UserId}");
+
             return DialogResult.OK == result ? OnAuthComplete(authForm.AuthResult) : null;
         }
 

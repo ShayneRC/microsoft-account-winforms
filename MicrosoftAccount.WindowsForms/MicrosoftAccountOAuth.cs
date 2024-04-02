@@ -15,6 +15,7 @@ namespace MicrosoftAccount.WindowsForms
         public static async Task<AppTokenResult> LoginAuthorizationCodeFlowAsync(string clientId, string[] scopes, bool selectAccount, IWin32Window owner = null)
         {
             var authorizationCode = await FormMicrosoftAccountAuth.GetAuthenticationToken(clientId, scopes, OAuthFlow.AuthorizationCodeGrant, selectAccount, owner);
+            Logging.Log($"AuthorizationCode: {authorizationCode}");
             if (string.IsNullOrEmpty(authorizationCode))
                 return null;
 

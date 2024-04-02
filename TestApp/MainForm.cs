@@ -49,7 +49,7 @@ namespace TestApp
 
             var scopes = tbScope.Text.Split(' ');
 
-            var authResult = await MicrosoftAccountOAuth.LoginAuthorizationCodeFlowAsync(tbClientId.Text, scopes);
+            var authResult = await MicrosoftAccountOAuth.LoginAuthorizationCodeFlowAsync(tbClientId.Text, scopes, true);
 
             if (authResult?.IsError == true)
             {
